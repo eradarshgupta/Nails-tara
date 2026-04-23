@@ -14,7 +14,7 @@
     "react-dom": "^18.2.0",
     "sonner": "^1.2.0",
     "lucide-react": "^0.368.0",
-    "@vercel/kv": "^1.0.0",
+    "@supabase/supabase-js": "^2.43.0",
     "@vercel/blob": "^0.22.0",
     "razorpay": "^2.9.2"
   },

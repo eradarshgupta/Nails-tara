@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { getOrders, saveOrders } from '@/lib/db';
+import { createOrder } from '@/lib/db';
 
 export async function POST(req) {
   if (!process.env.RAZORPAY_KEY_SECRET) {
@@ -18,8 +18,7 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Invalid payment signature' }, { status: 400 });
   }
 
-  const orders = await getOrders();
-  const order = {
+  const order = await createOrder({
     id: `ord_${Date.now().toString(36)}`,
     order_number: `TN${Date.now().toString(36).toUpperCase()}`,
     ...orderData,
@@ -28,9 +27,7 @@ export async function POST(req) {
     razorpay_order_id,
     razorpay_payment_id,
     order_status: 'processing',
-    created_at: new Date().toISOString(),
-  };
+  });
 
-  await saveOrders([order, ...orders]);
   return NextResponse.json({ order });
 }
