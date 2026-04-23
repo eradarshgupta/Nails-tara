@@ -16,7 +16,8 @@ export async function GET(req) {
     let products = await getProducts();
     if (!adminReq) products = products.filter(p => p.in_stock !== false);
     if (tag) products = products.filter(p => p.tags?.includes(tag));
-    return NextResponse.json({ products: products.slice(0, limit) });
+    const filtered = products;
+    return NextResponse.json({ products: filtered.slice(0, limit), total: filtered.length });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
