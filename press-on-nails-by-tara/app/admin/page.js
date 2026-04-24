@@ -311,9 +311,6 @@ export default function AdminPage() {
               {loggingIn ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          <p className="text-center text-xs text-tara-muted mt-4">
-            Default: admin@taranails.com / Tara@2024
-          </p>
           <Link href="/" className="block text-center text-sm text-tara-pink mt-4 hover:underline">← Back to website</Link>
         </div>
       </div>
