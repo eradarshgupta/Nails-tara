@@ -229,8 +229,70 @@ export default function CheckoutPage() {
         </div>
 
         <div className="grid md:grid-cols-5 gap-6">
+          {/* Order Summary — shown first on mobile, right column on desktop */}
+          <div className="md:col-span-2 md:order-2">
+            <div className="bg-white rounded-3xl shadow-sm p-5 md:sticky md:top-24">
+              <h3 className="font-serif text-lg text-tara-dark mb-4">Order Summary</h3>
+              <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                {cart.map(item => (
+                  <div key={item.id} className="flex gap-3">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-tara-blush flex-shrink-0">
+                      {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-1">
+                        <p className="text-sm font-medium text-tara-dark line-clamp-1 flex-1">{item.name}</p>
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                      {item.options?.shape && (
+                        <p className="text-xs text-tara-muted capitalize">{item.options.shape} · {item.options.length}</p>
+                      )}
+                      <div className="flex items-center justify-between mt-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="w-6 h-6 rounded-full bg-tara-blush hover:bg-tara-pink hover:text-white text-tara-pink flex items-center justify-center transition-colors"
+                          >
+                            <Minus size={11} />
+                          </button>
+                          <span className="text-sm font-semibold text-tara-dark w-5 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="w-6 h-6 rounded-full bg-tara-blush hover:bg-tara-pink hover:text-white text-tara-pink flex items-center justify-center transition-colors"
+                          >
+                            <Plus size={11} />
+                          </button>
+                        </div>
+                        <span className="text-sm font-semibold text-tara-pink">{formatPrice(item.price * item.quantity)}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-tara-blush pt-3 space-y-1.5 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-tara-muted">Subtotal</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-tara-muted">Shipping</span>
+                  <span className={shipping === 0 ? 'text-green-600 font-medium' : ''}>{shipping === 0 ? 'FREE 🎉' : formatPrice(shipping)}</span>
+                </div>
+                <div className="flex justify-between font-bold text-base border-t border-tara-blush pt-2 mt-1">
+                  <span>Total</span>
+                  <span className="text-tara-pink">{formatPrice(total)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Form */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 md:order-1">
             <div className="bg-white rounded-3xl shadow-sm p-6">
 
               {/* Step 1: Contact */}
@@ -406,67 +468,6 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Order Summary */}
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-3xl shadow-sm p-5 sticky top-24">
-              <h3 className="font-serif text-lg text-tara-dark mb-4">Order Summary</h3>
-              <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
-                {cart.map(item => (
-                  <div key={item.id} className="flex gap-3">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-tara-blush flex-shrink-0">
-                      {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-1">
-                        <p className="text-sm font-medium text-tara-dark line-clamp-1 flex-1">{item.name}</p>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                      {item.options?.shape && (
-                        <p className="text-xs text-tara-muted capitalize">{item.options.shape} · {item.options.length}</p>
-                      )}
-                      <div className="flex items-center justify-between mt-1.5">
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-6 h-6 rounded-full bg-tara-blush hover:bg-tara-pink hover:text-white text-tara-pink flex items-center justify-center transition-colors"
-                          >
-                            <Minus size={11} />
-                          </button>
-                          <span className="text-sm font-semibold text-tara-dark w-5 text-center">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-6 h-6 rounded-full bg-tara-blush hover:bg-tara-pink hover:text-white text-tara-pink flex items-center justify-center transition-colors"
-                          >
-                            <Plus size={11} />
-                          </button>
-                        </div>
-                        <span className="text-sm font-semibold text-tara-pink">{formatPrice(item.price * item.quantity)}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="border-t border-tara-blush pt-3 space-y-1.5 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-tara-muted">Subtotal</span>
-                  <span>{formatPrice(subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-tara-muted">Shipping</span>
-                  <span className={shipping === 0 ? 'text-green-600 font-medium' : ''}>{shipping === 0 ? 'FREE 🎉' : formatPrice(shipping)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-base border-t border-tara-blush pt-2 mt-1">
-                  <span>Total</span>
-                  <span className="text-tara-pink">{formatPrice(total)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </main>
