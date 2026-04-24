@@ -1,6 +1,7 @@
 import './globals.css';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
 import Providers from '@/components/Providers';
+import Navbar from '@/components/Navbar';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <Providers>
+          <Navbar />
           {children}
         </Providers>
       </body>
